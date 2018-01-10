@@ -121,19 +121,32 @@
    *
    * Makes no guarantees about asynchrony.
    */
+  /*
+  new Promise(function (resolve, reject) {
+    if (1) {
+      resolve(1)
+    } else {
+      reject(0)
+    }
+  })
+  */
   function doResolve(fn, self) {
+    // done 保证resolve和reject只能执行一次，从而保证Promise规范中只能从pendding到success或者failure
     var done = false;
     try {
       fn(function (value) {
+        // done为true表示已经resolve过，即Promise状态已经变成success
         if (done) return;
         done = true;
         resolve(self, value);
       }, function (reason) {
+        // done为true表示已经resolve过，即Promise状态已经变成failure
         if (done) return;
         done = true;
         reject(self, reason);
       });
     } catch (ex) {
+      // 如果执行fn过程出现错误，将错误捕获，并执行reject函数
       if (done) return;
       done = true;
       reject(self, ex);
