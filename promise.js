@@ -6,18 +6,32 @@
 
   function noop() {}
   
-  // Polyfill for Function.prototype.bind
+  // Polyfill for Function.prototype.
+  // 模拟原生bind函数，这里并没有完全实现原生的bind函数所有的功能，比如thisArg后面其实还可以跟参数
   function bind(fn, thisArg) {
     return function () {
       fn.apply(thisArg, arguments);
     };
   }
-
+  // Promise构造函数
   function Promise(fn) {
+    // 这种检测是否使用new去调用函数的形式不太正确，可以使用如下
+    // !(this instanceof Promise)
     if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
+    // fn必须是一个函数
     if (typeof fn !== 'function') throw new TypeError('not a function');
+    /**
+     * this._state promise的状态
+     * 0  pendding
+     * 1  
+     * 2
+     * 3
+     */
+     
     this._state = 0;
+    // promise是否已经被处理 success or failure都认为是已经被处理
     this._handled = false;
+    // .then(res) res的值
     this._value = undefined;
     this._deferreds = [];
 
