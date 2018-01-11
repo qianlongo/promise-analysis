@@ -155,6 +155,9 @@
     }
   }
 
+  // 部分老式浏览器在obj.catch会报错，故obj['catch']
+  // 原型方法catch
+
   Promise.prototype['catch'] = function (onRejected) {
     return this.then(null, onRejected);
   };
