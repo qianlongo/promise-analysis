@@ -23,7 +23,7 @@
     /**
      * this._state promise的状态
      * 0  pendding
-     * 1  
+     * 1  success
      * 2  reject
      * 3
      */
