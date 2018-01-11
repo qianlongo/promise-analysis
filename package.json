@@ -1,0 +1,26 @@
+{
+  "name": "promise-analysis",
+  "version": "1.0.0",
+  "description": "> 探究promise源码与实现，学习与分析[promise-polyfill-6.0.2](https://github.com/taylorhakes/promise-polyfill)",
+  "main": "promise.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qianlongo/promise-analysis.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qianlongo/promise-analysis/issues"
+  },
+  "homepage": "https://github.com/qianlongo/promise-analysis#readme",
+  "devDependencies": {
+    "nodemon": "^1.14.11"
+  }
+}

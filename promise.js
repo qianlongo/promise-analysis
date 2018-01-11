@@ -24,14 +24,14 @@
      * this._state promise的状态
      * 0  pendding
      * 1  
-     * 2
+     * 2  reject
      * 3
      */
      
     this._state = 0;
     // promise是否已经被处理 success or failure都认为是已经被处理
     this._handled = false;
-    // .then(res) res的值
+    // Promise成功或者失败回调函数的接收值
     this._value = undefined;
     this._deferreds = [];
 
@@ -87,6 +87,8 @@
       reject(self, e);
     }
   }
+
+  // 将Promise的状态设定为2即失败状态，并且将_value值设置为对应的"失败理由"
 
   function reject(self, newValue) {
     self._state = 2;
