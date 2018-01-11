@@ -25,9 +25,8 @@
      * 0  pendding
      * 1  success
      * 2  reject
-     * 3
+     * 3  过渡态
      */
-     
     this._state = 0;
     // promise是否已经被处理 success or failure都认为是已经被处理
     this._handled = false;
@@ -37,6 +36,8 @@
 
     doResolve(fn, this);
   }
+
+  
 
   function handle(self, deferred) {
     while (self._state === 3) {
@@ -55,6 +56,8 @@
       }
       var ret;
       try {
+        // onFulfilled 当 promise 执行结束后其必须被调用，其第一个参数为 promise 的终值
+        // onRejected 当 promise 被拒绝执行后其必须被调用，其第一个参数为 promise 的据因
         ret = cb(self._value);
       } catch (e) {
         reject(deferred.promise, e);
@@ -110,6 +113,8 @@
     }
     self._deferreds = null;
   }
+
+  // Handler 主要存储.then函数输入的onFulfilled, onRejected函数以及new Promise的实例
 
   function Handler(onFulfilled, onRejected, promise) {
     this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
