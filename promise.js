@@ -37,9 +37,11 @@
     doResolve(fn, this);
   }
 
-  
+  // .then回调函数执行逻辑
 
   function handle(self, deferred) {
+    // state为3表示resolve时传入的是一个Promise的实例
+    // 这种情况需要根据传入的Promise的状态及其值，选择上一个Promise的成功或者失败的回调去执行
     while (self._state === 3) {
       self = self._value;
     }
@@ -67,12 +69,17 @@
     });
   }
 
+  // Promise 解决过程
+  // 运行 [[Resolve]](promise, x)
+
   function resolve(self, newValue) {
     try {
       // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
+      // 如果 promise 和 x 指向同一对象，以 TypeError 为据因拒绝执行 promise (暂时不清楚这种情况如何出现)
       if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
       if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
         var then = newValue.then;
+        // newValue 为 Promise
         if (newValue instanceof Promise) {
           self._state = 3;
           self._value = newValue;
@@ -207,15 +214,20 @@
     });
   };
 
+  // resolve静态方法
+
   Promise.resolve = function (value) {
+    // 如果value本身是Promise的实例，直接返回
     if (value && typeof value === 'object' && value.constructor === Promise) {
       return value;
     }
-
+    // 否则新创建一个Promise的实例并且将传入的值作为resolve的值
     return new Promise(function (resolve) {
       resolve(value);
     });
   };
+
+  // reject静态方法
 
   Promise.reject = function (value) {
     return new Promise(function (resolve, reject) {

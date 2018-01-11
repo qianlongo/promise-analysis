@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "Launch Program",
       // "program": "${workspaceFolder}/promise.js"
-      "program": "${workspaceFolder}/test/demo1.js"
+      "program": "${workspaceFolder}/test/demo2.js"
     }
   ]
 }
