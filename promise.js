@@ -28,12 +28,13 @@
      * 3  过渡态
      */
     this._state = 0;
-    // promise是否已经被处理 success or failure都认为是已经被处理
+    // 表示.then(onFulfilled, onRejected)中的onFulfilled, onRejected是否已经处理过
     this._handled = false;
     // Promise成功或者失败回调函数的接收值
     this._value = undefined;
+    // 等待当前的Promise完成的后续的Promise数组
     this._deferreds = [];
-
+    // 准备执行传进来的fn
     doResolve(fn, this);
   }
 
@@ -146,23 +147,27 @@
   */
   function doResolve(fn, self) {
     // done 保证resolve和reject只能执行一次，从而保证Promise规范中只能从pendding到success或者failure
+    // 控制一个promise只能执行一次resolve，或者一次reject
     var done = false;
     try {
       fn(function (value) {
         // done为true表示已经resolve过，即Promise状态已经变成success
         if (done) return;
         done = true;
+        // 成功 => 交由resolve函数去处理
         resolve(self, value);
       }, function (reason) {
         // done为true表示已经resolve过，即Promise状态已经变成failure
         if (done) return;
         done = true;
+        // 失败 => 交由reject函数取处理
         reject(self, reason);
       });
     } catch (ex) {
       // 如果执行fn过程出现错误，将错误捕获，并执行reject函数
       if (done) return;
       done = true;
+      // 出错 => 交由reject函数取处理
       reject(self, ex);
     }
   }
